@@ -6,10 +6,8 @@ class index extends lss{
     //登陆页面
     public function index(){
         $data = '视图文d件';
-        lss::assign('data',$data);
         $this->assign('data',$data);
         $this->display('index');
-        lss::display('index');
     }
     //登陆
     public function login(){
