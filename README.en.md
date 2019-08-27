@@ -1,7 +1,7 @@
-# lss框架
+# 第一个聊天房间
 
 #### Description
-{**When you're done, you can delete the content in this README and update the file with details for others getting started with your repository**}
+我的第一个聊天房间，基于php js html swoole实现的
 
 #### Software Architecture
 Software architecture description
