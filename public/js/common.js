@@ -63,7 +63,7 @@ function login() {
             username:username,
             password:password
         };
-        $.post('index/login',post_data,function (data) {
+        $.post('doAction/login',post_data,function (data) {
             data = JSON.parse(data);
             if (data.code==200){
                 window.location = 'index/home'

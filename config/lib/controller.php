@@ -6,7 +6,7 @@ namespace config\lib;
  * Date: 2018/12/17 0017
  * Time: 上午 11:36
  */
-class template{
+class controller{
 #1.模板引擎类-成员属性
     private $templateDir;#存储模板引擎源文件的所在目录
     private $compileDir;#存储编译之后文件的存放目录
