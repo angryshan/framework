@@ -11,6 +11,7 @@ class route{
     public $route;
     public $ctrl;#控制器
     public $action;#方法
+    public $path = '';#方法
 
     public function __construct()
     {
@@ -22,10 +23,18 @@ class route{
          * 3.返回对应控制器和方法
          */
         if (isset($_SERVER['REQUEST_URI'])&& $_SERVER['REQUEST_URI'] != '/'){
-            $path = $_SERVER['REQUEST_URI'];
-            $pathArr = explode('/',trim($path,'/'));
+            $url = $_SERVER['REQUEST_URI'];
+            $pathArr = explode('/',trim($url,'/'));
 
             if (isset($pathArr[0])){
+                if (strpos($pathArr[0],'.')){//控制器中是否存在点
+                    $paths = explode('.',trim($pathArr[0],'.'));
+                    $count = count($paths);
+                    $pathArr[0] = $paths[$count-1];
+                    unset($paths[$count-1]);
+                    $this->path = implode('/',$paths);
+                }
+
                 $this->ctrl = $pathArr[0];
                 unset($pathArr[0]);
             }

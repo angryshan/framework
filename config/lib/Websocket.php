@@ -1,7 +1,6 @@
 <?php
-include_once 'redisTest.php';
-include_once 'chat.php';
-class WebsocketTest {
+namespace config\lib;
+class Websocket {
     public $server;
     public $data=[];
     public function __construct() {
@@ -53,4 +52,4 @@ class WebsocketTest {
         $this->server->start();
     }
 }
-new WebsocketTest();
+

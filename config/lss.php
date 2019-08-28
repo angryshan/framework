@@ -38,7 +38,7 @@ class lss {
         $route =new \config\lib\route();
         $ctrlClass = $route->ctrl;
         $action = $route->action;
-        $ctrlFile = APP.'/controller/'.$ctrlClass.'.php';#控制器文件
+        $ctrlFile = APP.'/'.$route->path.'/controller/'.$ctrlClass.'.php';#控制器文件
         $ctrlClass1 = '\\'.MODULE.'\controller\\'.$ctrlClass;
         if (is_file($ctrlFile)){
             include $ctrlFile;

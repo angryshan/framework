@@ -13,6 +13,7 @@ define('APP',LSS.'/app');#项目文件
 define('MODULE','app');#项目文件
 define('_PUBLIC',LSS.'/public');
 define('DEBUG',true);#debug
+//$debug = \config\lib\conf::get('debug','config');
 
 
 if (DEBUG){

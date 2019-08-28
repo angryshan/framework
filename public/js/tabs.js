@@ -51,9 +51,9 @@ websocket.connections = function(evt,e){
 function action(type) {
 	var url;
 	if(type==1){
-		url = 'doAction.php?act=list_online';
+		url = '/doAction/list_online';
 	}else {
-		url = 'doAction.php?act=list_friends';
+		url = '/doAction/list_friends';
 	}
 	friends.innerHTML = '';
 	$.getJSON(url,function(data){
@@ -229,14 +229,14 @@ function add_friend() {
 	post_data ={
 		fid:chatto
 	};
-	$.post('doAction.php?act=add_friend',post_data,function (data) {
+	$.post('/doAction/add_friend',post_data,function (data) {
 		data = JSON.parse(data);
 		console.log(data);
 		alert(data.msg);
 	})
 }
 function list_news() {
-	$.getJSON('doAction.php?act=list_news',function (data) {
+	$.getJSON('/doAction/list_news',function (data) {
 		$('#chat_index').hide();
 		$('#new_index').show();
 		data = eval(data);
@@ -281,7 +281,7 @@ function agree_friend(id,status) {
 		id:id,
 		status:status
 	};
-	$.post('doAction.php?act=agree_friend',post_data,function (data) {
+	$.post('/doAction/agree_friend',post_data,function (data) {
 		data = JSON.parse(data);
 		console.log(data);
 		alert(data.msg);

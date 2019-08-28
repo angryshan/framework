@@ -29,8 +29,8 @@
 <body  style="overflow:hidden;" >
 <!--主页面板-->
 
-    <h1>快来聊天<br><img style="width: 55px;border-radius: 28%;" src="../../public/<?php echo $this->getAssign('img'); ?>">
-        <a href="doAction.php?act=dologout" class="friends" style="font-size: 1px" onclick="freshen()">退出</a>
+    <h1>快来聊天<br><img style="width: 55px;border-radius: 28%;" src="<?php echo $this->getAssign('img'); ?>">
+        <a href="/doAction/dologout" class="friends" style="font-size: 1px" onclick="freshen()">退出</a>
     </h1>
     <div class="container w3layouts agileits" id="chat_index">
         <div id="chatbox">
@@ -131,7 +131,7 @@
 <!-- //Body -->
 <script type="text/javascript">
     var myID = '<?php echo $this->getAssign('id'); ?>';
-    var myImg = '<?=isset($_SESSION['img'])?$_SESSION['img']:"2";?>';
+    var myImg = '<?php echo $this->getAssign('img'); ?>';
 
 </script>
 <!-- Custom-JavaScript-File-Links -->

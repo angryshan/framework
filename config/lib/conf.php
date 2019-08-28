@@ -2,6 +2,12 @@
 namespace config\lib;
 class conf{
     static public $conf = array();#存放配置名，节省资源
+    static public $path ;#存放配置名，节省资源
+
+    public function __construct()
+    {
+        self::$path = LSS.'/config/config/';
+    }
 
     /**
      * 加载单个配置名 返回配置名称

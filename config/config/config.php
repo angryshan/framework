@@ -1,11 +1,12 @@
 <?php
 return array(
-
+    //初始路由
     'route' => array(
         'CTRL'  =>'index',
         'ACTION'=>'index',
     ),
 
+    //数据库配置
     'database' => array(
         'database_type' => 'mysql',
         'database_name' => 'chat',
@@ -15,6 +16,7 @@ return array(
         'charset' => 'utf8'
     ),
 
+    //smaty配置
     'template' => array(
         'leftTag' => '{#',
         'rightTag' => '#}',
@@ -22,12 +24,15 @@ return array(
         'viewCssCon' => '/public',
     ),
 
+    //日志配置
     'log' => array(
         'DRIVE'     => 'file',
         'OPTION'    => array(
             'PATH'=>LSS.'/log/'
         ),
-    )
+    ),
 
+    //是否开启debug
+    'debug' => true,
 
 );
