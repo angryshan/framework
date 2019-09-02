@@ -4,6 +4,7 @@ use mysqli;
 
 class lssMySql{
     public $mysqli;
+    public $sql;
     protected $name;
     protected $host;
     protected $username;
@@ -38,8 +39,8 @@ class lssMySql{
 
         $place = implode(',',array_fill(0,count($arr),'?'));
 
-        $sql = "insert into $table ($keys)VALUES ($place)";
-        return $this->query($sql,$values)->insert_id;
+        $this->sql = "insert into $table ($keys)VALUES ($place)";
+        return $this->query($this->sql,$values)->insert_id;
     }
 
     /**
@@ -50,14 +51,14 @@ class lssMySql{
      */
     public function insertArr($table, $arr)
     {
-        $sql = '';
+        $this->sql = '';
         foreach ($arr as $key => $value){
             $keys = implode(',', array_keys($value));
             $values = "'" . implode("','", array_values($value)) . "'";
-            $sql .= "insert into $table ($keys)VALUES ($values)";
+            $this->sql .= "insert into $table ($keys)VALUES ($values)";
         }
 
-        return $this->mysqli->multi_query($sql);
+        return $this->mysqli->multi_query($this->sql);
     }
 
     /**
@@ -69,13 +70,13 @@ class lssMySql{
     public function query($sql,$values){
         $statement = $this->mysqli->prepare($sql);
         if ($statement){
-            $params = array_merge([str_repeat('s',count($values))],$values);
+            $params = array_merge(array(str_repeat('s',count($values))),$values);
 
             foreach ($params as $k=>$v){
                 $params[$k] = &$params[$k];
             }
 
-            call_user_func_array([$statement,'bind_param'],$params);//$stmt->bind_param("sss", $firstname, $lastname, $email);
+            call_user_func_array(array(array($statement,'bind_param'),$params));//$stmt->bind_param("sss", $firstname, $lastname, $email);
             $statement->execute();
             $this->statement = $statement;
 
@@ -94,8 +95,8 @@ class lssMySql{
     public function find($table, $find = '*', $where = '')
     {
         $where = $where ? "where $where" : '';
-        $sql = "select {$find} from {$table} " . $where;
-        $res = $this->mysqli->query($sql);
+        $this->sql = "select {$find} from {$table} " . $where;
+        $res = $this->mysqli->query($this->sql);
 
         return mysqli_fetch_assoc($res);
     }
@@ -110,8 +111,8 @@ class lssMySql{
     public function select($table, $find = '*', $where = '')
     {
         $where = $where ? "where $where" : '';
-        $sql = "select {$find} from {$table} $where";
-        $res = $this->mysqli->query($sql);
+        $this->sql = "select {$find} from {$table} $where";
+        $res = $this->mysqli->query($this->sql);
         return mysqli_fetch_all($res, MYSQLI_ASSOC);
     }
 
@@ -125,8 +126,8 @@ class lssMySql{
     public function sql_count($table, $find = '*', $where = '')
     {
         $where = $where ? 'where ' . $where : '';
-        $sql = "select {$find} from {$table} $where";
-        $res = $this->mysqli->query($sql);
+        $this->sql = "select {$find} from {$table} $where";
+        $res = $this->mysqli->query($this->sql);
         return mysqli_num_rows($res);
     }
 
@@ -139,8 +140,8 @@ class lssMySql{
     {
         $where = $where ? 'where ' . $where : '';
         $offset = ($curr - 1) * $limit;
-        $sql = "select {$find} from {$table} $where limit $offset,$limit";
-        $res = $this->mysqli->query($sql);
+        $this->sql = "select {$find} from {$table} $where limit $offset,$limit";
+        $res = $this->mysqli->query($this->sql);
         return mysqli_fetch_all($res, MYSQLI_ASSOC);
     }
 
@@ -162,8 +163,8 @@ class lssMySql{
             }
             $str .= $sep . $key . "='" . $val . "'";
         }
-        $sql = "update {$table} set {$str} " . ($where == null ? null : " where " . $where);//修改
-        $res = $this->mysqli->query($sql);
+        $this->sql = "update {$table} set {$str} " . ($where == null ? null : " where " . $where);//修改
+        $res = $this->mysqli->query($this->sql);
         return $res;
     }
 
@@ -174,8 +175,38 @@ class lssMySql{
      * @return bool|\mysqli_result
      */
     public function del($table,$where){
-        $sql = "DELETE FROM $table WHERE $where";
-        $res = $this->mysqli->query($sql);
+        $this->sql = "DELETE FROM $table WHERE $where";
+        $res = $this->mysqli->query($this->sql);
         return $res;
+    }
+
+    /**
+     * 获取当前执行的sql语句
+     * @return mixed
+     */
+    public function getSql(){
+        return $this->sql;
+    }
+
+    /**
+     * 开启事务处理
+     * 注意，只有引擎必须是innodb
+     */
+    public function commitStart(){
+        $this->mysqli->autocommit(false);
+    }
+
+    /**
+     * 提交事务
+     */
+    public function commit($a){
+        $this->mysqli->commit();
+    }
+
+    /**
+     * 回滚事务
+     */
+    public function rollback(){
+        $this->mysqli->rollback();
     }
 }

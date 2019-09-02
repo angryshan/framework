@@ -2,6 +2,7 @@
 namespace app\controller;
 
 use app\model\indexmodel;
+use config\lib\lssRedis;
 
 class doAction{
     public $db;
@@ -27,6 +28,7 @@ class doAction{
             $_SESSION['img'] = $row['img'];
             $wheres = "id=".$_SESSION['id'];#条件
             $row = $this->db ->update('lss_member',['session_id'=>$_SESSION['session_id']],$wheres);
+
             if ($row){
                 return json_encode(['code'=>200,'msg'=>'登陆成功','data'=>$_SESSION['identity']]);
             }
@@ -159,4 +161,5 @@ class doAction{
             return json_encode(['code'=>400,'data'=>'']);
         }
     }
+
 }

@@ -2,6 +2,7 @@
 namespace app\controller;
 use app\model\indexmodel;
 use config\lib\controller;
+use config\lib\lssRedis;
 use config\lss;
 class index extends controller {
     //登陆页面
