@@ -199,7 +199,7 @@ class lssMySql{
     /**
      * 提交事务
      */
-    public function commit($a){
+    public function commit(){
         $this->mysqli->commit();
     }
 
