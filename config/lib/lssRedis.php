@@ -5,7 +5,7 @@ class lssRedis{
     #redis 初始化
     public static $redis = [];
 
-    public static function __construct()
+    public function __construct()
     {
         self::$redis = new \Redis();
         self::$redis ->connect('0.0.0.0', 6379);
@@ -60,7 +60,7 @@ class lssRedis{
      * @return int
      */
     public static function getBit($key,$start,$end){
-        return self::$redis->getBit($key,$start,$end);
+        return self::$redis->getBit($key,$start);
     }
 
 

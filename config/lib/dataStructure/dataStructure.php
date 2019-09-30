@@ -216,4 +216,54 @@ class dataStructure{
         return $arr;
     }
 
+    /**
+     * 快速排序1
+     * @param $arr array 待排序数组
+     * @return array
+     */
+    public function quickSort($arr) {
+        if (count($arr) <=1){
+            return $arr;
+        }
+        $pivotIndex = floor(count($arr)/2);//关机键字的位置
+        $pivot = array_splice($arr,$pivotIndex,1)[0];//关键字
+        $left = [];
+        $right = [];
+        for ($i = 0;$i<count($arr);$i++){
+            if ($arr[$i] < $pivot){
+                array_push($left,$arr[$i]);
+            }else{
+                array_push($right,$arr[$i]);
+            }
+        }
+        return array_merge($this->quickSort($left),[$pivot],$this->quickSort($right));
+    }
+
+    /**
+     * 快速排序
+     * @param $arr @待排数组
+     * @param $left @
+     * @param $right
+     * @return mixed
+     */
+    public function quickSort2($arr,$left,$right){
+        if ($left<$right){
+
+            $x = $arr[$right];
+            $i=$left-1;
+
+            for ($j = $left;$j<=$right;$j++){
+                if ($arr[$j] <= $x){
+                    $i++;
+                    $temp = $arr[$i];
+                    $arr[$i] = $arr[$j];
+                    $arr[$j] = $temp;
+                }
+            }
+            $arr = $this->quickSort2($arr,$left,$i-1);
+            $arr =$this->quickSort2($arr,$i+1,$right);
+        }
+        return $arr;
+    }
+
 }
