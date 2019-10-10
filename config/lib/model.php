@@ -1,7 +1,7 @@
 <?php
 namespace config\lib;
 
-use \config\lib\lssMySql;
+use \config\lib\mysql\lssMySql;
 
 class model extends lssMySql {
 

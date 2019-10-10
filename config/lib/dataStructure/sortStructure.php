@@ -1,6 +1,11 @@
 <?php
 namespace config\lib\dataStructure;
-class dataStructure{
+/**
+ * 排序算法
+ * Class sortStructure
+ * @package config\lib\dataStructure
+ */
+class sortStructure{
     public $arr ;
 
     public function __construct(array $arr){
@@ -264,6 +269,93 @@ class dataStructure{
             $arr =$this->quickSort2($arr,$i+1,$right);
         }
         return $arr;
+    }
+
+    /**
+     * 堆排序
+     * @param $arr @排序数组
+     * @return mixed
+     */
+    public function heapSort($arr){
+        $heapSize = count($arr);//数组长度大小
+
+        //找出顶端最大的元素
+        for ($i = floor($heapSize/2)-1;$i>=0;$i--){//$i当前节点的下标
+            $arr = $this->heapify($arr,$i,$heapSize);//大根堆排序
+        }
+
+        //$arr已经按照大根堆排序好，将最大元素沉到数组末端
+        for ($j = $heapSize-1;$j>=1;$j--){
+            //最后一个元素与第一个元素交换
+            $temp = $arr[0];
+            $arr[0] = $arr[$j];
+            $arr[$j] = $temp;
+
+            //除了最后一个元素位置不变，其他的按照大根堆排序
+            $arr = $this->heapify($arr,0,--$heapSize);
+
+        }
+
+        return $arr;
+    }
+
+    /**
+     * 按大根堆排序好
+     * @param $arr @数组
+     * @param $x @当前节点下标
+     * @param $len @数组长度
+     * @return mixed
+     */
+    public function heapify($arr,$x,$len){
+        $l = 2*$x+1;//左子树下标
+        $r = 2*$x+2;//右子树下标
+        $largest = $x;//当前节点下标
+        if ($l < $len && $arr[$l]>$arr[$largest]){//左子树下标小于总长度，且左子树的值大于当前节点的值
+            $largest = $l;//当前节点的值=左子树的值
+        }
+        if ($r < $len && $arr[$r] > $arr[$largest]){//道理同上
+            $largest = $r;
+        }
+
+        //交换数组当前节点与非当前节点的值
+        if ($largest !=$x){
+            $temp = $arr[$x];
+            $arr[$x] = $arr[$largest];
+            $arr[$largest] = $temp;
+            $arr = $this->heapify($arr,$largest,$len);
+        }
+
+        return $arr;
+    }
+
+    /**
+     * 计数排序
+     * @param $arr
+     * @return array
+     */
+    public function countingSort($arr){
+        $len = count($arr);//数组长度
+
+        $c = $b = [];
+        $min = $max = 0;
+
+        //通过循环找出数组中的最大值和最小值   或者可用max（$arr） min($arr)
+        for ($i=0;$i<$len;$i++){
+            $min = $min <= $arr[$i] ? $min : $arr[$i];
+            $max = $max >= $arr[$i] ? $max : $arr[$i];
+            $c[$arr[$i]] = 1;
+        }
+
+        for ($j = $min; $j < $max;$j++){
+            $c[$j+1] = ($c[$j+1] ? $c[$j+1] : 0 ) + ($c[$j] ? $c[$j] : 0);
+        }
+
+        for ($k= $len-1; $k>=0;$k--){
+            $b[$c[$arr[$k]]-1] = $arr[$k];
+            $c[$arr[$k]]--;
+        }
+        ksort($b);//由于php的数组是键值对的存在，因此只能再排序了
+        return $b;
     }
 
 }

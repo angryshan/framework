@@ -3,7 +3,7 @@ namespace config;
 
 use config\lib\conf;
 
-class lss {
+class loader {
     #用于判断类是否存在，节约性能
     public static $classMap = array();
 

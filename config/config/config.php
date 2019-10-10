@@ -35,4 +35,9 @@ return array(
     //是否开启debug
     'debug' => true,
 
+    'redis' => [
+        'host'    => '0.0.0.0',
+        'port'    => '6937',
+    ]
+
 );

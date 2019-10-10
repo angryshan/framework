@@ -24,8 +24,8 @@ if (DEBUG){
 
 
 include CONFIG.'/common/function.php';
-include CONFIG.'/lss.php';
+include CONFIG . '/loader.php';
 
-spl_autoload_register('\config\lss::load');
+spl_autoload_register('\config\loader::load');
 
-\config\lss::run();
+\config\loader::run();

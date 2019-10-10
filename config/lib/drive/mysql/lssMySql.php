@@ -1,5 +1,5 @@
 <?php
-namespace config\lib;
+namespace config\lib\mysql;
 use mysqli;
 
 class lssMySql{

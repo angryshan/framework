@@ -14,10 +14,6 @@ if (!function_exists('config')) {
      */
     function config($name = '', $file = null)
     {
-        if (is_null($value) && is_string($name)) {
-            return 0 === strpos($name, '?') ? conf::get(substr($name, 1), $range) : Config::get($name, $range);
-        } else {
-            return Config::set($name, $value, $range);
-        }
+
     }
 }

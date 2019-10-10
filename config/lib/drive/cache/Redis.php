@@ -1,15 +1,7 @@
 <?php
-namespace config\lib;
-class lssRedis{
+namespace config\lib\drive\cache;
 
-    #redis 初始化
-    public static $redis = [];
-
-    public function __construct()
-    {
-        self::$redis = new \Redis();
-        self::$redis ->connect('0.0.0.0', 6379);
-    }
+abstract class Redis{
 
     /**
      * 设置字符串
@@ -17,18 +9,14 @@ class lssRedis{
      * @param $value
      * @return bool
      */
-    public static function set($key,$value){
-        return self::$redis->set($key,$value);
-    }
+    abstract public function set($key,$value);
 
     /**
      * 获取指定 key 的值
      * @param $key
      * @return bool|string
      */
-    public static function get($key){
-        return self::$redis->get($key);
-    }
+    abstract public function get($key);
 
     /**
      * 命令用于获取存储在指定 key 中字符串的子字符串
@@ -38,9 +26,7 @@ class lssRedis{
      * @param $end
      * @return string
      */
-    public static function getRange($key,$start,$end){
-        return self::$redis->getRange($key,$start,$end);
-    }
+    abstract public function getRange($key,$start,$end);
 
     /**
      * 用于设置指定 key 的值，并返回 key 的旧值。
@@ -48,9 +34,7 @@ class lssRedis{
      * @param $value
      * @return string
      */
-    public static function getSet($key,$value){
-        return self::$redis->getSet($key,$value);
-    }
+    abstract public function getSet($key,$value);
 
     /**
      * 对 key 所储存的字符串值，获取指定偏移量上的位(bit)
@@ -59,9 +43,7 @@ class lssRedis{
      * @param $end
      * @return int
      */
-    public static function getBit($key,$start,$end){
-        return self::$redis->getBit($key,$start);
-    }
+    abstract public function getBit($key,$start,$end);
 
 
 

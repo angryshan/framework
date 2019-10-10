@@ -1,6 +1,6 @@
 <?php
 
-namespace config\lib;
+namespace config\lib\test;
 /**
  * 方法测试
  * Class lssTest
