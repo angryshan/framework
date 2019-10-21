@@ -41,9 +41,20 @@ class loader {
         $ctrlFile = APP.'/'.$route->path.'/controller/'.$ctrlClass.'.php';#控制器文件
         $ctrlClass1 = '\\'.MODULE.'\controller\\'.$ctrlClass;
         if (is_file($ctrlFile)){
+            $warning = conf::get('warning','config');
+            if ($warning){
+                error_reporting( E_ALL&~E_NOTICE );//不看警告信息
+            }
+
             include $ctrlFile;
             $ctrl = new $ctrlClass1();
-            echo $ctrl->$action();
+            $data = $ctrl->$action();
+            if ($data){
+                echo json_encode($data);
+            }else{
+                echo $data;
+            }
+
             \config\lib\log::log('ctrl:'.$ctrlClass.'  '.'action:'.$action);//写日志
         }else{
             throw new \Exception('找不到控制器'.$ctrlClass);

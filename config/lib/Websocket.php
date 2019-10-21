@@ -2,9 +2,11 @@
 namespace config\lib;
 class Websocket {
     public $server;
-    public $data=[];
+    public $data=[];//存放能获取的用户数据
+
     public function __construct() {
-        $this->server = new Swoole\WebSocket\Server("0.0.0.0", 9502);
+        $host = conf::get('webSocket','config');
+        $this->server = new Swoole\WebSocket\Server($host['host'], $host['port']);
 
         $this->server->on('open', function (swoole_websocket_server $server, $request) {
             echo "新用户 $request->fd 加入。\n";

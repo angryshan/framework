@@ -1,7 +1,7 @@
 <?php
 namespace config\lib;
 
-use \config\lib\mysql\lssMySql;
+use \config\lib\drive\mysql\lssMySql;
 
 class model extends lssMySql {
 
@@ -9,4 +9,5 @@ class model extends lssMySql {
         $option = conf::get('database','config');
         parent::__construct($option);
     }
+
 }

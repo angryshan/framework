@@ -1,7 +1,7 @@
 <?php
 namespace config\lib\drive\cache;
 use config\lib\conf;
-use config\lib\Redis;
+use config\lib\drive\cache\Redis;
 
 class lssRedis extends Redis {
 

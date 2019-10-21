@@ -14,10 +14,10 @@ websocket.onopen = function(evt,e){
 websocket.onmessage = function(evt){
 	if (evt.data=='logout'){//判断是否有人注销/登录
 		action(1);
-		$.getJSON("doAction.php?act=two_logout",function(data){
+		$.getJSON("/doAction.php?act=two_logout",function(data){
 			if (data==400){
 				alert('该账号已经在别处登陆，请及时修改密码重新登陆');
-				window.location = 'index.html';
+				window.location = '/';
 			}
 		});
 		return false;
@@ -47,13 +47,16 @@ websocket.connections = function(evt,e){
 }
 
 
+
+
+
 //好友列表
 function action(type) {
 	var url;
 	if(type==1){
-		url = '/doAction/list_online';
+		url = '/doAction/list_online';//在线列表
 	}else {
-		url = '/doAction/list_friends';
+		url = '/doAction/list_friends';//好友列表
 	}
 	friends.innerHTML = '';
 	$.getJSON(url,function(data){
@@ -201,7 +204,7 @@ function table() {
 			$(".message").filter(".right").attr("src", '\''+myImg+'\'');
 			$('#friendslist').fadeOut();
 			$('#chatview').fadeIn();
-			$("#user"+goodId).attr('class','status available');
+			// $("#user"+goodId).attr('class','status available');
 			msgPlace.scrollTop = msgPlace.scrollHeight;
 
 			$('#close').unbind("click").click(function(){
@@ -235,6 +238,20 @@ function add_friend() {
 		alert(data.msg);
 	})
 }
+//同意或拒绝添加朋友
+function agree_friend(id,status) {
+	post_data ={
+		id:id,
+		status:status
+	};
+	$.post('/doAction/agree_friend',post_data,function (data) {
+		data = JSON.parse(data);
+		console.log(data);
+		alert(data.msg);
+		list_news();
+	})
+}
+//消息列表
 function list_news() {
 	$.getJSON('/doAction/list_news',function (data) {
 		$('#chat_index').hide();
@@ -274,17 +291,5 @@ function list_news() {
 		}
 
 		$('#newsList').html(html);
-	})
-}
-function agree_friend(id,status) {
-	post_data ={
-		id:id,
-		status:status
-	};
-	$.post('/doAction/agree_friend',post_data,function (data) {
-		data = JSON.parse(data);
-		console.log(data);
-		alert(data.msg);
-		list_news();
 	})
 }

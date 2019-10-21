@@ -13,4 +13,7 @@ class indexmodel extends model{
         $list = $this->find($table,'*',$where);
         return $list;
     }
+
+
+
 }

@@ -1,12 +1,12 @@
 <?php
 
-namespace config\lib\test;
+namespace config\lib\drive\test;
 /**
  * 方法测试
  * Class lssTest
  * @package config\lib
  */
-class lssTest{
+class LssTest{
     public $ch;
     public function __construct()
     {
@@ -28,7 +28,7 @@ class lssTest{
 
 
     public function posturl($url,$data){
-        $data  = json_encode($data);
+        $data  = json_encode($data); var_dump($data);
         $headerArray =array("Content-type:application/json;charset='utf-8'","Accept:application/json");
 
         curl_setopt($this->ch , CURLOPT_URL, $url);
@@ -39,7 +39,7 @@ class lssTest{
         curl_setopt($this->ch ,CURLOPT_HTTPHEADER,$headerArray);
         curl_setopt($this->ch , CURLOPT_RETURNTRANSFER, 1);
 
-        $output = $this->com();
+        $output = $this->com(); var_dump($url);
         return $output;
     }
 
@@ -54,6 +54,7 @@ class lssTest{
         curl_setopt($this->ch, CURLOPT_POSTFIELDS, $data);//设置提交的字符串
 
         $output = $this->com();
+
         return $output;
     }
 

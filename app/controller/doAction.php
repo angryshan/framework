@@ -2,7 +2,7 @@
 namespace app\controller;
 
 use app\model\indexmodel;
-use config\lib\lssRedis;
+use config\lib\drive\mysql\Mysql;
 
 class doAction{
     public $db;
@@ -14,26 +14,23 @@ class doAction{
 
     //登陆
     public function login(){
-        $username = isset($_POST['username'])?$_POST['username']:'';
-        $password = isset($_POST['password'])?md5($_POST['password']):'';
+        $username = isset($_POST['username'])?$_POST['username']:'king';
+        $password = isset($_POST['password'])?md5($_POST['password']):md5('king');
 
-        $where = "username='$username' AND password='$password'";
-        $row = $this->db ->login('lss_member',$where);
-
+        $row = Mysql::table('lss_member')->where(['username'=>$username,'password'=>$password])->select(true);
         if ($row){
             $_SESSION['name'] = $row['username'];
             $_SESSION['id'] = $row['id'];
             $_SESSION['session_id'] = time();
             $_SESSION['identity'] = $row['identity'];
             $_SESSION['img'] = $row['img'];
-            $wheres = "id=".$_SESSION['id'];#条件
-            $row = $this->db ->update('lss_member',['session_id'=>$_SESSION['session_id']],$wheres);
 
+            $row = Mysql::table('lss_member')->where(['id'=>$_SESSION['id']])->update(['session_id'=>$_SESSION['session_id']]);
             if ($row){
-                return json_encode(['code'=>200,'msg'=>'登陆成功','data'=>$_SESSION['identity']]);
+                return ['code'=>200,'msg'=>'登陆成功','data'=>$_SESSION['identity']];
             }
         }
-        return json_encode(['code'=>400,'msg'=>'账户或密码错误']);
+        return ['code'=>400,'msg'=>'账户或密码错误'];
     }
     //注销
     public function dologout(){
@@ -50,7 +47,7 @@ class doAction{
     //判断是否登录
     public function check_login(){
         if (!$_SESSION){
-            return json_encode(['code'=>400,'msg'=>'请登录']);
+            return ['code'=>400,'msg'=>'请登录'];
         }
 
     }
@@ -64,10 +61,10 @@ class doAction{
             if ($_SESSION['session_id'] != $row['session_id']){
                 $_SESSION = array();
                 session_destroy();//销毁session
-                return json_encode(['code'=>400,'msg'=>'被迫下线']);
+                return ['code'=>400,'msg'=>'被迫下线'];
             }
         }
-        return json_encode(['code'=>400,'msg'=>'登陆成功']);;
+        return ['code'=>400,'msg'=>'登陆成功'];
     }
 
     //注册
@@ -88,9 +85,9 @@ class doAction{
         $where = 'session_id!=0';
         $rows = $this->db->select('lss_member','id,username,email,img',$where);
         foreach ($rows as $k=>$v){
-            $where1 = '';
+            $where1 = '(uid='.$v['id'].' or fid='.$v['id'].')and del=1';
         }
-        return json_encode($rows);
+        return $rows;
 
     }
     //好友列表
@@ -102,11 +99,11 @@ class doAction{
             foreach ($rows as $k=>$v){
                 $fid = $v['uid']!=$_SESSION['id'] ? $v['uid'] : $v['fid'];
                 $where1 = 'del=1 and id='.$fid;
-                $data[$k] = $this->db->find('lss_member','id,username,email,img',$where1);
+                $data[$k] = $this->db->find('lss_member','id,username,email,img,session_id',$where1);
             }
         }
 
-        return json_encode(isset($data)?$data:'');
+        return isset($data)?$data:'';
     }
 
     //添加好友
@@ -119,13 +116,13 @@ class doAction{
         $where = 'del=1 and uid='.$arr['uid'].' and fid='.$arr['fid'];
         $rs = $this->db->find('lss_invited','id',$where);
         if ($rs){
-            return json_encode(['code'=>500,'msg'=>'已发送过添加请求']);
+            return ['code'=>500,'msg'=>'已发送过添加请求'];
         }
 
         if ($this->db->insert('lss_invited',$arr)){#调用insert方法，插入数据库
-            return json_encode(['code'=>200,'msg'=>'添加朋友请求发送成功']);
+            return ['code'=>200,'msg'=>'添加朋友请求发送成功'];
         }else{
-            return json_encode(['code'=>400,'msg'=>'添加朋友请求发送失败']);
+            return ['code'=>400,'msg'=>'添加朋友请求发送失败'];
         }
     }
 
@@ -139,9 +136,9 @@ class doAction{
         if ($rs){
             $row = $this->db->find('lss_invited','uid,fid',$where);
             $this->db->insert('lss_friend',$row);
-            return json_encode(['code'=>200,'msg'=>'操作成功']);
+            return ['code'=>200,'msg'=>'操作成功'];
         }
-        return json_encode(['code'=>400,'msg'=>'操作失败，请重新操作']);
+        return ['code'=>400,'msg'=>'操作失败，请重新操作'];
     }
 
     //消息列表
@@ -156,9 +153,9 @@ class doAction{
                 $rs[$k]['fName'] = $row['username'];
                 $rs[$k]['img'] = $row['img'];
             }
-            return json_encode(['code'=>200,'data'=>$rs]);
+            return ['code'=>200,'data'=>$rs];
         }else{
-            return json_encode(['code'=>400,'data'=>'']);
+            return ['code'=>400,'data'=>''];
         }
     }
 

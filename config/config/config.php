@@ -34,10 +34,17 @@ return array(
 
     //是否开启debug
     'debug' => true,
+    //是否忽略警告
+    'warning' => true,
 
     'redis' => [
         'host'    => '0.0.0.0',
         'port'    => '6937',
+    ],
+
+    'webSocket' => [
+        'host'    => '0.0.0.0',
+        'port'    => '9502',
     ]
 
 );

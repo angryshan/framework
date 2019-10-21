@@ -1,5 +1,5 @@
 <?php
-namespace config\lib\mysql;
+namespace config\lib\drive\mysql;
 use mysqli;
 
 class lssMySql{
@@ -76,7 +76,7 @@ class lssMySql{
                 $params[$k] = &$params[$k];
             }
 
-            call_user_func_array(array(array($statement,'bind_param'),$params));//$stmt->bind_param("sss", $firstname, $lastname, $email);
+            call_user_func_array(array($statement,'bind_param'),$params);//$stmt->bind_param("sss", $firstname, $lastname, $email);
             $statement->execute();
             $this->statement = $statement;
 
