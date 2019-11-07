@@ -3,18 +3,20 @@ var friends = document.getElementById("friends");
 
 var chatto,chatToImg,data1,data2,list;
 var array =[];
+var key = 'aaa';
 
-var wsServer = 'ws://192.168.222.100:9502';
+var wsServer = 'ws://139.196.206.138:9502';
+// var wsServer = 'ws://192.168.222.100:9502';
 var websocket = new WebSocket(wsServer);
 websocket.onopen = function(evt,e){
 	// websocket.send("#name#"+text);
-	console.log('从服务器获取到的数据:',evt.data);
+	console.log('从服务器获取到的数据:',evt);
 	freshen();//若有人加入了聊天，即刷新好友列表
 }
 websocket.onmessage = function(evt){
 	if (evt.data=='logout'){//判断是否有人注销/登录
 		action(1);
-		$.getJSON("/doAction.php?act=two_logout",function(data){
+		$.getJSON("/doAction/two_logout",function(data){
 			if (data==400){
 				alert('该账号已经在别处登陆，请及时修改密码重新登陆');
 				window.location = '/';
@@ -27,7 +29,7 @@ websocket.onmessage = function(evt){
 	var data = evt.data;
 	console.log(data);
 	array.push(data);
-	saveData('aaaa',array);
+	saveData(key,array);
 
 	messageList(data);//将数据显示
 
@@ -36,14 +38,16 @@ websocket.onmessage = function(evt){
 		$("#user"+b).attr('class','status away');//如果是未查看的消息，就显示黄点，已查看显示绿点
 	}
 }
-websocket.onclose = function(evt){
+websocket.onclose = function(e){
+	console.log('websocket 断开: ' + e.code + ' ' + e.reason + ' ' + e.wasClean);
+	console.log(e)
 	console.log("服务器拒绝");
 }
 websocket.onerror = function(evt,e){
-	console.log('错误:'+evt.data);
+	console.log('错误:'+evt);
 }
 websocket.connections = function(evt,e){
-	console.log('错误:'+evt.data);
+	console.log('错误:'+evt);
 }
 
 
@@ -101,8 +105,8 @@ function saveData(key,dataArr) {
 	localStorage.setItem(key,str);//存储
 }
 //获取聊天内容
-function getData(key){
-	var str = localStorage.getItem('aaaa');//根据key值获取localStorage存储的值，此时是json字符串
+function getData(){
+	var str = localStorage.getItem(key);//根据key值获取localStorage存储的值，此时是json字符串
 	array =JSON.parse(str);//把json字符串转换成对象
 	if (array==null){
 		array=[];
@@ -118,6 +122,9 @@ function messageList(data) {
 	data1 = data.substring(data.indexOf('#from_id#'),-1);
 	data2 = data.substring(data.lastIndexOf('#from_id#')+9);
 	var data3 = data2.split('#');
+	if(!isNaN(data)||isNaN(Date.parse(data))){
+		return false;
+	}
 	list = data1.split('#userfrom_id#');
 	var time1 = timeMatch(data3[1]);
 	if ((list[0]==chatto && myID == list[1]) || (list[0]==myID &&chatto == list[1])) {
@@ -145,9 +152,13 @@ function freshen() {
 
 //时间的正则表达式
 function timeMatch(dateStr) {
+
 	//假如是2017-10-22 10:11:12
 	var reg = /^(\d{4})-(\d{1,2})-(\d{1,2}) ([0-9]{1,2}):([0-9]{1,2})?:([0-5]{0,1}[0-9]{1})?$/;
+	console.log(dateStr);
 	return dateStr.match(reg);
+
+
 }
 
 //切换菜单内容

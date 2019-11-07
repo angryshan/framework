@@ -6,7 +6,7 @@ class conf{
 
     public function __construct()
     {
-        self::$path = LSS.'/config/config/';
+        self::$path = APP_PATH.'/config/config/';
     }
 
     /**
@@ -21,7 +21,7 @@ class conf{
         if (isset(self::$conf[$file])){//若文件存在，直接加载，避免重复资源
             return self::$conf[$file][$name];
         }else{
-            $path = LSS.'/config/config/'.$file.'.php';//config里的配置文件
+            $path = APP_PATH.'/config/config/'.$file.'.php';//config里的配置文件
             if (is_file($path)){
                 $conf = include $path;
                 if (isset($conf[$name])){
@@ -46,7 +46,7 @@ class conf{
         if (isset(self::$conf[$file])){
             return self::$conf[$file];
         }else{
-            $path = LSS.'/config/config/'.$file.'.php';
+            $path = APP_PATH.'/config/config/'.$file.'.php';
             if (is_file($path)){
                 $conf = include $path;
                 self::$conf[$file] = $conf;

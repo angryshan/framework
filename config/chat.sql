@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2019-08-16 11:17:41
+Date: 2019-11-05 10:42:59
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -25,11 +25,33 @@ CREATE TABLE `lss_friend` (
   `fid` int(11) NOT NULL COMMENT '朋友id',
   `del` tinyint(1) NOT NULL DEFAULT '1' COMMENT '删除，0是删除，1是不删除',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='好友表';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='好友表';
 
 -- ----------------------------
 -- Records of lss_friend
 -- ----------------------------
+INSERT INTO `lss_friend` VALUES ('1', '5', '1', '1');
+
+-- ----------------------------
+-- Table structure for lss_invited
+-- ----------------------------
+DROP TABLE IF EXISTS `lss_invited`;
+CREATE TABLE `lss_invited` (
+  `id` int(8) NOT NULL AUTO_INCREMENT,
+  `uid` int(8) NOT NULL DEFAULT '0' COMMENT '发起人id',
+  `fid` int(8) NOT NULL DEFAULT '0' COMMENT '收信人id',
+  `createtime` int(11) NOT NULL COMMENT '创建时间',
+  `updatetime` int(11) NOT NULL COMMENT '修改时间',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态，0是未处理，1是同意，2是拒绝',
+  `del` tinyint(1) NOT NULL DEFAULT '1' COMMENT '删除，0是删除，1是不删除',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='请求添加好友表';
+
+-- ----------------------------
+-- Records of lss_invited
+-- ----------------------------
+INSERT INTO `lss_invited` VALUES ('6', '5', '1', '1570778314', '1570778348', '1', '1');
+INSERT INTO `lss_invited` VALUES ('7', '1', '5', '1572856964', '1572856964', '0', '1');
 
 -- ----------------------------
 -- Table structure for lss_member
@@ -53,6 +75,6 @@ CREATE TABLE `lss_member` (
 -- ----------------------------
 -- Records of lss_member
 -- ----------------------------
-INSERT INTO `lss_member` VALUES ('1', 'king', 'b2086154f101464aab3328ba7e060deb', '12@qq.com', '1549957523', '0', '1', '1', '1565924973', 'images/winter-soldier.jpg');
-INSERT INTO `lss_member` VALUES ('5', 'good', 'e10adc3949ba59abbe56e057f20f883e', '1264689637@qq.com', '1565755196', '0', '2', '1', '1565843401', 'images/captain-america.jpg');
-INSERT INTO `lss_member` VALUES ('2', 'mom', 'e10adc3949ba59abbe56e057f20f883e', '1264689637@qq.com', '1565755183', '0', '2', '1', '1', 'images/black-widow.jpg');
+INSERT INTO `lss_member` VALUES ('1', 'king', 'b2086154f101464aab3328ba7e060deb', '12@qq.com', '1549957523', '0', '1', '1', '1572850857', '/public/images/winter-soldier.jpg');
+INSERT INTO `lss_member` VALUES ('5', 'good', 'e10adc3949ba59abbe56e057f20f883e', '1264689637@qq.com', '1565755196', '0', '2', '1', '1570777051', '/public/images/captain-america.jpg');
+INSERT INTO `lss_member` VALUES ('2', 'mom', 'e10adc3949ba59abbe56e057f20f883e', '1264689637@qq.com', '1565755183', '0', '2', '1', '1570776941', '/public/images/black-widow.jpg');

@@ -2,6 +2,7 @@
 namespace app\controller;
 use config\lib\controller;
 use \config\lib\drive\mysql\Mysql;
+use config\lib\Env;
 
 class index extends controller {
     //登陆页面
@@ -20,17 +21,32 @@ class index extends controller {
     }
 
     public function test(){
-        $row = Mysql::table('lss_member')->where(['username'=>'king','password'=>md5('king')])->select(true);
-        $b = Mysql::getSql();
+        if (is_file(ROOT_PATH . '.env')) {
+            $env = parse_ini_file(ROOT_PATH . '.env', true);
+            foreach ($env as $key => $val) {
+                $name = ENV_PREFIX . strtoupper($key);
+var_dump($val);
+                if (is_array($val)) {
+                    foreach ($val as $k => $v) {
+                        $item = $name . '_' . strtoupper($k);
+                        $b = putenv("$item=$v");
+                        var_dump($item);
+                        var_dump($b);
+                    }
+                } else {
+                    $b = putenv("$name=$val");
+                }
 
-        var_dump($b);
-        $gift = [];
+            }
+        }
+        $a = ENV_PREFIX . strtoupper(str_replace('.', '_', 'DATABASE.hostname'));
+        var_dump($a);
+        $result = getenv($a, true);
+        var_dump($result);
 
-        $need_gift[1] = 500 -$gift[0]>0 ? 500 -$gift[0] : 0;//还差多少礼物数量可过第一关
-        $need_gift[2] = 25 -$gift[1]>0 ? 25 -$gift[1] : 0;//还差多少礼物数量可过第二关
-        $need_gift[3] = 2 -$gift[2]>0 ? 2 -$gift[2] : 0;
-        $need_gift[4] = $need_gift[2] == 0 ? (75 -$gift[1]>0 ? 75 -$gift[1] : 0 ) : 50;//还差多少礼物数量可过第三关(第二关和第三关的礼物重叠，所以先满足第二关)
-        $need_gift[5] = $need_gift[3] == 0 ? (7 -$gift[2]>0 ? 7 -$gift[2] : 0) : 5;
+    }
+    public function test1(){
+        phpinfo();
     }
 
 

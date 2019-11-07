@@ -2,3 +2,4 @@
 composer.lock
 *.log
 .svn
+.env

@@ -28,7 +28,7 @@ class file{
          * 2.写入日志
          */
         if (!is_dir($this->path.date('Ym'))){
-            mkdir($this->path.date('Ym'),'0777',true);
+            mkdir($this->path.date('Ym'),'0755');
         }
         $file = file_put_contents($this->path.date('Ym').'/'.date('d').$postfix,
             date('Y-m-d H:i:s').json_encode($message).PHP_EOL,FILE_APPEND);

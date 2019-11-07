@@ -11,19 +11,21 @@ class lssMySql{
     protected $password;
     protected $charset;
     protected $statement;
+    protected $result;
 
     public function __construct(array $config){
 
         $this->name = isset($config['database_name']) ? strtolower($config['database_name']) : '';
         $this->host = isset($config['host']) ? strtolower($config['host']) : 'localhost';
         $this->username = isset($config['username']) ? strtolower($config['username']) : 'root';
-        $this->password = isset($config['password']) ? strtolower($config['password']) : '123';
+        $this->password = isset($config['password']) ? strtolower($config['password']) : 'lss633';
         $this->charset = isset($config['charset']) ? strtolower($config['charset']) : 'utf8';
         $this->mysqli = new mysqli($this->host, $this->username , $this->password , $this->name);
         if ($this->mysqli ->connect_error) {
             die($this->mysqli ->connect_error) ;
         }
         mysqli_set_charset($this->mysqli , $this->charset);
+        $this->result = '';
     }
 
     /**
@@ -97,8 +99,10 @@ class lssMySql{
         $where = $where ? "where $where" : '';
         $this->sql = "select {$find} from {$table} " . $where;
         $res = $this->mysqli->query($this->sql);
-
-        return mysqli_fetch_assoc($res);
+        if (mysqli_num_rows($res)){
+            $this->result = mysqli_fetch_assoc($res);
+        }
+        return $this->result;
     }
 
     /**
@@ -113,7 +117,10 @@ class lssMySql{
         $where = $where ? "where $where" : '';
         $this->sql = "select {$find} from {$table} $where";
         $res = $this->mysqli->query($this->sql);
-        return mysqli_fetch_all($res, MYSQLI_ASSOC);
+        if (mysqli_num_rows($res)){
+            $this->result = mysqli_fetch_all($res, MYSQLI_ASSOC);
+        }
+        return $this->result;
     }
 
     /**
@@ -142,7 +149,10 @@ class lssMySql{
         $offset = ($curr - 1) * $limit;
         $this->sql = "select {$find} from {$table} $where limit $offset,$limit";
         $res = $this->mysqli->query($this->sql);
-        return mysqli_fetch_all($res, MYSQLI_ASSOC);
+        if (mysqli_num_rows($res)){
+            $this->result = mysqli_fetch_all($res, MYSQLI_ASSOC);
+        }
+        return $this->result ;
     }
 
     /**

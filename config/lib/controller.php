@@ -65,7 +65,13 @@ class controller{
 
         //css,js正则替换
         $path = '/'.preg_quote($this->viewCss).'/';
-        $this->outputHtml = preg_replace($path,'<?php echo \'http://\'.$_SERVER[\'SERVER_NAME\'].$this->template[\'viewCssCon\']$1; ?>',$this->outputHtml);
+        if ($_SERVER["SERVER_PORT"]!=80){
+            $replacement = '<?php echo \'http://\'.$_SERVER[\'SERVER_NAME\'].\':\'.$_SERVER["SERVER_PORT"].$this->template[\'viewCssCon\']$1; ?>';
+        }else{
+            $replacement = '<?php echo \'http://\'.$_SERVER[\'SERVER_NAME\'].$this->template[\'viewCssCon\']$1; ?>';
+        }
+
+        $this->outputHtml = preg_replace($path,$replacement,$this->outputHtml);
 
         $compileFilename = $this->compileDir.md5($templateName).$ext;
         file_put_contents($compileFilename,$this->outputHtml);

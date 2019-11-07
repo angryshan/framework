@@ -1,4 +1,5 @@
 <?php
+use config\lib\Env;
 return array(
     //初始路由
     'route' => array(
@@ -9,10 +10,10 @@ return array(
     //数据库配置
     'database' => array(
         'database_type' => 'mysql',
-        'database_name' => 'chat',
-        'host' => 'b.cn',
-        'username' => 'root',
-        'password' => 'root',
+        'database_name' => Env::get('database.database',false)?Env::get('database.database',false):'chat',
+        'host' => '127.0.0.1',
+        'username' => Env::get('database.username',false)?Env::get('database.username',false):'root',
+        'password' => Env::get('database.password',false)?Env::get('database.password',false):'lss633',
         'charset' => 'utf8'
     ),
 
@@ -28,14 +29,14 @@ return array(
     'log' => array(
         'DRIVE'     => 'file',
         'OPTION'    => array(
-            'PATH'=>LSS.'/log/'
+            'PATH'=>APP_PATH.'/log/'
         ),
     ),
 
     //是否开启debug
-    'debug' => true,
+    'debug' => 'on',//off
     //是否忽略警告
-    'warning' => true,
+    'warning' => false,
 
     'redis' => [
         'host'    => '0.0.0.0',

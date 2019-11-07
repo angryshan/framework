@@ -17,7 +17,7 @@ class loader {
             return true;
         }else{
             $class = str_replace('\\','/',$class);
-            $file = LSS.'/'.$class.'.php';
+            $file = APP_PATH.'/'.$class.'.php';
 
             if (is_file($file)){
                 include $file;
@@ -45,6 +45,8 @@ class loader {
             if ($warning){
                 error_reporting( E_ALL&~E_NOTICE );//不看警告信息
             }
+            $debug = conf::get('debug','config');
+            ini_set('display_errors',$debug);
 
             include $ctrlFile;
             $ctrl = new $ctrlClass1();
@@ -60,5 +62,6 @@ class loader {
             throw new \Exception('找不到控制器'.$ctrlClass);
         }
     }
+
 
 }
