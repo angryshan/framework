@@ -5,6 +5,8 @@ return array(
     'route' => array(
         'CTRL'  =>'index',
         'ACTION'=>'index',
+        //是否自己配置路由
+        'isOpenRoute'=>true,
     ),
 
     //数据库配置
@@ -38,6 +40,7 @@ return array(
     //是否忽略警告
     'warning' => false,
 
+    //缓存配置
     'redis' => [
         'host'    => '0.0.0.0',
         'port'    => '6937',

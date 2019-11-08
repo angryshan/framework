@@ -6,7 +6,6 @@ var array =[];
 var key = 'aaa';
 
 var wsServer = 'ws://139.196.206.138:9502';
-// var wsServer = 'ws://192.168.222.100:9502';
 var websocket = new WebSocket(wsServer);
 websocket.onopen = function(evt,e){
 	// websocket.send("#name#"+text);

@@ -59,7 +59,8 @@ class loader {
 
             \config\lib\log::log('ctrl:'.$ctrlClass.'  '.'action:'.$action);//写日志
         }else{
-            throw new \Exception('找不到控制器'.$ctrlClass);
+//            throw new \Exception('找不到控制器'.$ctrlClass);
+            var_dump('找不到控制器'.$ctrlClass);
         }
     }
 
